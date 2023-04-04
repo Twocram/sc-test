@@ -35,4 +35,4 @@ const CitizenSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model('citizen', CitizenSchema);
+export default mongoose.model('Citizen', CitizenSchema);

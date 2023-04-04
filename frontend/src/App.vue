@@ -1,30 +1,42 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="container">
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<script>
+export default {
+  data() {
+    return {
+      cities: [],
+      citizens: [],
+    }
+  },
+
+  methods: {
+    async getAllCities() {
+      try {
+        const res = await fetch('http://localhost:3000/api/cities');
+        const data = await res.json();
+        this.cities = data;
+      } catch (e) {
+        console.error(e)
+      }
+    },
+
+    async getAllCitizens() {
+      try {
+        const res = await fetch('http://localhost:3000/api/citizens');
+        const data = await res.json();
+        this.citizens = data;
+      } catch (e) {
+        console.error(e)
+      }
+    },
+  },
+
+  async mounted() {
+    await this.getAllCities();
+    await this.getAllCitizens();
+  }
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+</script>
