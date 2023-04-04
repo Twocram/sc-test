@@ -1,11 +1,13 @@
 <template>
   <div class="container">
-    <button @click="getAddress">click</button>
+    <tree-item :data="getAddress()" />
   </div>
 </template>
 
 <script>
+import TreeItem from './components/TreeItem.vue';
 export default {
+  components: { TreeItem },
   data() {
     return {
       cities: [],
@@ -37,10 +39,10 @@ export default {
     getAddress() {
       const map = new Map();
       this.citizens.forEach(item => {
+        const { name } = item;
         const { name: cityName } = this.cities.find(city => city.id === item.city_id);
         const { name: districtName } = item.groups.find(group => group.type === 'district');
         const { name: streetName } = item.groups.find(group => group.type === 'street');
-        const { name } = item;
         if (!map.has(cityName)) {
           map.set(cityName, new Map([[districtName, new Map([[streetName, [name]]])]]));
         } else {
@@ -65,8 +67,8 @@ export default {
           if (value instanceof Map) {
             printMap(value, level + 1);
           } else {
-            for (let user of value) {
-              console.log(`${tab}\t${user}`)
+            for (let item of value) {
+              console.log(`${tab}\t${item}`)
             }
           }
         }
