@@ -58,17 +58,20 @@ export default {
         }
       });
 
-      map.forEach((district, city) => {
-        console.log('-', city);
-        district.forEach((street, d) => {
-          console.log(' -', d);
-          street.forEach((names, s) => {
-            console.log('  -', s);
-            names.forEach((n) => console.log('   -', n))
-          })
-        })
-      })
-
+      function printMap(map, level = 1) {
+        const tab = "\t".repeat(level - 1);
+        for (const [key, value] of map.entries()) {
+          console.log(`${tab}-${key}`);
+          if (value instanceof Map) {
+            printMap(value, level + 1);
+          } else {
+            for (let user of value) {
+              console.log(`${tab}\t${user}`)
+            }
+          }
+        }
+      }
+      printMap(map);
       return map;
     }
   },
