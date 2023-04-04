@@ -1,6 +1,6 @@
 import Citizen from '../models/Citizen.js';
 
-// get all citizens from mongodb
+// get all Citizens from mongodb
 export const getAll = async (req, res) => {
   try {
     const citizens = await Citizen.find().sort({ id: 1 });
