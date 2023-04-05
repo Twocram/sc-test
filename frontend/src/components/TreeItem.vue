@@ -2,8 +2,7 @@
   <div class="tab-container">
     <div v-for="(item, index) in data" :data-key="index" :key="index" class="tab-container__item">
       <template v-if="(typeof item === 'object')">
-        <tree-item :data="item" :tabLevel="tabLevel + 1" :cities="cities" :fullData="fullData"
-          :tooltipData="tooltipData" />
+        <tree-item :data="item" :cities="cities" :fullData="fullData" :tooltipData="tooltipData" />
       </template>
       <template v-else>
         <div v-if="tooltipData.some(obj => obj.name === item)" class="tooltip" :data-tooltip="getCityName(item)">
@@ -28,11 +27,6 @@ export default {
     data: {
       type: Object,
       required: true
-    },
-    tabLevel: {
-      type: Number,
-      required: false,
-      default: 0,
     },
     tooltipData: {
       type: Array,
