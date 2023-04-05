@@ -5,8 +5,9 @@
         <tree-item :data="item" :cities="cities" :fullData="fullData" :tooltipData="tooltipData" />
       </template>
       <template v-else>
-        <div v-if="tooltipData.some(obj => obj.name === item)" class="tooltip" :data-tooltip="getCityName(item)">
-          - {{ item }}
+        <div v-if="tooltipData.some(obj => obj?.name === item.substring(0, item.indexOf('_')))" class="tooltip"
+          :data-tooltip="getCityName(item.substring(item.indexOf('_') + 1))">
+          - {{ item.substring(0, item.indexOf('_')) }}
         </div>
         <div v-else>
           - {{ item }}
@@ -41,10 +42,10 @@ export default {
   },
 
   methods: {
-    getCityName(userName) {
-      let userCityId = this.tooltipData.find((obj) => obj?.name === userName)?.city_id;
-      let city = this.cities.find((obj) => obj.id === userCityId);
-      return `${city.name}, ${city.data} жителей`;
+    getCityName(id) {
+      let cityId = this.tooltipData.find((obj) => obj._id === id).city_id;
+      let city = this.cities.find((obj) => obj.id === cityId);
+      return `${city?.name}, ${city?.data} жителей`;
     }
   }
 };
@@ -53,7 +54,7 @@ export default {
 <style lang="scss" scoped>
 @mixin tab {
     padding-left: 20px;
-}
+} 
 
 .tab {
     &-container {

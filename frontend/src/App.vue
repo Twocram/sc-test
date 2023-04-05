@@ -39,7 +39,7 @@ export default {
     getAddress() {
       const map = new Map();
       this.citizens.forEach(item => {
-        const { name } = item;
+        const name = `${item.name}_${item._id}`;
         const { name: cityName } = this.cities.find(city => city.id === item.city_id);
         const { name: districtName } = item.groups.find(group => group.type === 'district');
         const { name: streetName } = item.groups.find(group => group.type === 'street');
@@ -57,12 +57,22 @@ export default {
       function printMap(map, level = 1) {
         const tab = "\t".repeat(level - 1);
         for (const [key, value] of map.entries()) {
-          console.log(`${tab}-${key}`);
+          if (key.substring(key.indexOf('_')) !== -1) {
+            console.log(`${tab}-${key.substring(key.indexOf('_'))}`);
+          } else {
+            console.log(`${tab}-${key}`);
+          }
           if (value instanceof Map) {
             printMap(value, level + 1);
           } else {
             for (let item of value) {
-              console.log(`${tab}\t-${item}`)
+              let separatorIndex = item[0].indexOf("_");
+              if (separatorIndex !== -1) {
+                console.log(`${tab}\t -${item[0].substring(0, separatorIndex)}`);
+              } else {
+                console.log(`${tab}\t -${item}`)
+              }
+
             }
           }
         }
