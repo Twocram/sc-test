@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <tree-item :data="getAddress()" :tooltipData="citizens" :cities="cities" />
+    <tree-item :data="getAddress()" :fullData="getAddress()" :tooltipData="citizens" :cities="cities" />
   </div>
 </template>
 
