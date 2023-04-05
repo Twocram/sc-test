@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <tree-item :data="getAddress()" />
+    <tree-item :data="getAddress()" :tooltipData="citizens" :cities="cities" />
   </div>
 </template>
 
@@ -43,21 +43,15 @@ export default {
         const { name: cityName } = this.cities.find(city => city.id === item.city_id);
         const { name: districtName } = item.groups.find(group => group.type === 'district');
         const { name: streetName } = item.groups.find(group => group.type === 'street');
-        if (!map.has(cityName)) {
-          map.set(cityName, new Map([[districtName, new Map([[streetName, [name]]])]]));
-        } else {
-          const cityMap = map.get(cityName);
-          if (!cityMap.has(districtName)) {
-            cityMap.set(districtName, new Map([[streetName, [name]]]));
-          } else {
-            const districtMap = cityMap.get(districtName);
-            if (!districtMap.has(streetName)) {
-              districtMap.set(streetName, [name]);
-            } else {
-              districtMap.get(streetName).push(name);
-            }
-          }
-        }
+
+        const cityMap = map.get(cityName) || new Map();
+        const districtMap = cityMap.get(districtName) || new Map();
+        const streetList = districtMap.get(streetName) || [];
+        streetList.push([name]);
+
+        map.set(cityName, cityMap);
+        cityMap.set(districtName, districtMap);
+        districtMap.set(streetName, streetList);
       });
 
       function printMap(map, level = 1) {
@@ -68,7 +62,7 @@ export default {
             printMap(value, level + 1);
           } else {
             for (let item of value) {
-              console.log(`${tab}\t${item}`)
+              console.log(`${tab}\t-${item}`)
             }
           }
         }
